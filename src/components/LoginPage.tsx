@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoginBackground from "../images/login-background.png";
+import { useNavigate } from "react-router-dom";
 import {
   faFacebookF,
   faTwitter,
@@ -13,6 +14,7 @@ import { registerNewUser, loginUser } from "../FirebaseService"; // Import Fireb
 
 const LoginPage: React.FC = () => {
   const [loginOrRegister, setLoginOrRegister] = useState(false);
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -39,6 +41,7 @@ const LoginPage: React.FC = () => {
         const user = userCredential.user;
         console.log("Registered user:", user);
         setNewUser({ email: "", password: "", name: "" });
+        navigate("/home");
       })
       .catch((error: any) => {
         console.error("Registration error:", error);
@@ -50,6 +53,7 @@ const LoginPage: React.FC = () => {
       .then((userCredential: any) => {
         const user = userCredential.user;
         console.log("Logged in user:", user);
+        navigate("/home");
         setUser({ email: "", password: "" });
       })
       .catch((error: any) => {
@@ -67,8 +71,7 @@ const LoginPage: React.FC = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           zIndex: "1",
-        }}
-      ></div>
+        }}></div>
 
       {/* Login dialog */}
       <div
@@ -81,8 +84,7 @@ const LoginPage: React.FC = () => {
           height: "70%",
           width: "70%",
           zIndex: "2",
-        }}
-      >
+        }}>
         {loginOrRegister ? (
           <form>
             <div className="d-flex flex-row align-items-center justify-content-center justify-content-sm-start">
@@ -90,24 +92,21 @@ const LoginPage: React.FC = () => {
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faFacebookF} />
               </button>
 
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faTwitter} />
               </button>
 
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faGoogle} />
               </button>
             </div>
@@ -115,8 +114,7 @@ const LoginPage: React.FC = () => {
             <div className="divider d-flex align-items-center my-3">
               <p
                 className="text-center fw-bold mx-3 mb-0"
-                style={{ color: "white" }}
-              >
+                style={{ color: "white" }}>
                 Or
               </p>
             </div>
@@ -171,8 +169,7 @@ const LoginPage: React.FC = () => {
                 <label
                   className="form-check-label"
                   htmlFor="form2Example3"
-                  style={{ color: "white" }}
-                >
+                  style={{ color: "white" }}>
                   Remember me
                 </label>
               </div>
@@ -190,16 +187,14 @@ const LoginPage: React.FC = () => {
                   paddingRight: "2rem",
                   backgroundColor: "",
                 }}
-                onClick={() => registerNewUserHandler()}
-              >
+                onClick={() => registerNewUserHandler()}>
                 Register
               </button>
               <p className="small fw-bold mt-2 mb-0">
                 Already have an account?{" "}
                 <a
                   className="link-danger"
-                  onClick={() => setLoginOrRegister(false)}
-                >
+                  onClick={() => setLoginOrRegister(false)}>
                   Login
                 </a>
               </p>
@@ -212,24 +207,21 @@ const LoginPage: React.FC = () => {
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faFacebookF} />
               </button>
 
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faTwitter} />
               </button>
 
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faGoogle} />
               </button>
             </div>
@@ -237,8 +229,7 @@ const LoginPage: React.FC = () => {
             <div className="divider d-flex align-items-center my-3">
               <p
                 className="text-center fw-bold mx-3 mb-0"
-                style={{ color: "white" }}
-              >
+                style={{ color: "white" }}>
                 Or
               </p>
             </div>
@@ -281,8 +272,7 @@ const LoginPage: React.FC = () => {
                 <label
                   className="form-check-label"
                   htmlFor="form2Example3"
-                  style={{ color: "white" }}
-                >
+                  style={{ color: "white" }}>
                   Remember me
                 </label>
               </div>
@@ -300,16 +290,14 @@ const LoginPage: React.FC = () => {
                   paddingRight: "2rem",
                   backgroundColor: "#4E387E",
                 }}
-                onClick={() => loginUserHandler()}
-              >
+                onClick={() => loginUserHandler()}>
                 Login
               </button>
               <p className="small fw-bold mt-2 mb-0">
                 Don't have an account?{" "}
                 <a
                   className="link-danger"
-                  onClick={() => setLoginOrRegister(true)}
-                >
+                  onClick={() => setLoginOrRegister(true)}>
                   Register
                 </a>
               </p>
@@ -325,8 +313,7 @@ const LoginPage: React.FC = () => {
           backgroundColor: "rgba(78, 56, 126, 0.9)",
           color: "white",
           zIndex: "2",
-        }}
-      >
+        }}>
         {/* Copyright */}
         <div className="text-white">Copyright © 2020. All rights reserved.</div>
         {/* Social icons */}
