@@ -1,0 +1,18 @@
+/* Style the movie list container */
+.movie-list {
+    display: flex;
+    background-color: rgb(87, 84, 84);
+    /* Use flexbox to arrange items horizontally */
+    flex-wrap: wrap;
+    /* Allow items to wrap to the next row when there's no space */
+    justify-content: center;
+    /* Align items to the start of each row */
+}
+
+/* Style each movie card */
+.movie-card {
+margin: 20px;
+cursor: pointer;
+    
+    /* Add spacing between movie cards */
+}

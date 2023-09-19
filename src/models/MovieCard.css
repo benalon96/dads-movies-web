@@ -1,0 +1,39 @@
+/* MovieCard.css */
+.movie-card {
+    width: 250px;
+    /* Set the card's width */
+    margin: 10px;
+    /* Add margin for spacing between cards */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    /* Add a shadow for depth */
+    border-radius: 5px;
+    /* Add rounded corners */
+    overflow: hidden;
+    /* Hide any content that overflows the card */
+    transition: transform 0.2s;
+    /* Add a smooth hover effect */
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    /* Enlarge the card on hover */
+}
+
+.movie-card-img {
+    width: 100%;
+    /* Make the image fill the card width */
+    height: auto;
+    /* Automatically adjust the height to maintain aspect ratio */
+}
+
+.movie-card-info {
+    padding: 10px;
+    /* Add padding for content inside the card */
+}
+
+.movie-card-title {
+    font-size: 16px;
+    /* Set the title font size */
+    margin: 0;
+    /* Remove margin for the title */
+}
