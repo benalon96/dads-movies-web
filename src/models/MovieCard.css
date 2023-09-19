@@ -1,7 +1,7 @@
 /* MovieCard.css */
 .movie-card {
     width: 230px;
-    height: 130px;
+    height: 180px;
     /* Set the card's width */
     margin: 5px;
     /* Add margin for spacing between cards */
@@ -23,7 +23,7 @@
 .movie-card-img {
     /* width: 100%; */
     width: 230px !important;
-    height: 130px !important;
+    height: 180px !important;
     /* Make the image fill the card width */
     height: auto;
     /* Automatically adjust the height to maintain aspect ratio */

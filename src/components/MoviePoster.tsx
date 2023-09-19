@@ -57,3 +57,67 @@ export const getMoviePoster = async (movieTitle: any) => {
     throw error;
   }
 };
+// Function to fetch a movie's trailer by title
+// const axios = require("axios");
+
+// Function to fetch a movie trailer by name using TMDb API
+export const searchMovieTrailer = async (movieTitle: any) => {
+  try {
+    // Construct the TMDb API URL for movie search
+    const tmdbApiUrl = `https://api.themoviedb.org/3/search/movie`;
+
+    // Replace "YOUR_TMDB_API_KEY" with your actual TMDb API key
+    const apiKey = "k_tb2eox4k";
+
+    // Make a GET request to search for the movie using TMDb API
+    const response = await axios.get(tmdbApiUrl, {
+      params: {
+        api_key: apiKey,
+        query: movieTitle,
+      },
+    });
+
+    // Check if any results were found
+    if (response.data.results.length > 0) {
+      // Get the movie ID of the first result
+      const movieId = response.data.results[0].id;
+
+      // Construct the TMDb API URL for movie videos (trailers)
+      const videosApiUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
+
+      // Make a GET request to get videos (trailers) for the movie
+      const videosResponse = await axios.get(videosApiUrl, {
+        params: {
+          api_key: apiKey,
+        },
+      });
+
+      // Check if there are any video results (trailers)
+      if (videosResponse.data.results.length > 0) {
+        // Get the key of the first video result (usually a trailer)
+        const videoKey = videosResponse.data.results[0].key;
+
+        // Construct the YouTube trailer URL
+        const trailerUrl = `https://www.youtube.com/watch?v=${videoKey}`;
+
+        return trailerUrl;
+      } else {
+        throw new Error("No trailer found for the movie.");
+      }
+    } else {
+      throw new Error("No movie found with that name.");
+    }
+  } catch (error) {
+    console.error("Error searching for movie trailer:", error);
+    throw error;
+  }
+};
+
+// Example usage:
+searchMovieTrailer("Inception")
+  .then((trailerUrl) => {
+    console.log("Movie trailer URL:", trailerUrl);
+  })
+  .catch((error) => {
+    console.error("Error:", error.message);
+  });
