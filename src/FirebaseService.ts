@@ -7,7 +7,8 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { getDatabase, ref, get } from "firebase/database";
-
+import firebase from "firebase/app";
+import "firebase/auth";
 // Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBGg0YNqXb_EXf05aOHKjMHwmaQZnVjhvI",
@@ -29,6 +30,11 @@ const auth: Auth = getAuth(app);
 // Reference to the Firebase Realtime Database
 const db = getDatabase();
 
+// Function to register a new user
+export const getAuthContext = () => {
+  const auth1 = getAuth();
+  return auth1;
+};
 // Function to register a new user
 export const registerNewUser = (
   email: string,

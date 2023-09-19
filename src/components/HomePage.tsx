@@ -27,8 +27,8 @@ const HomePage = () => {
     fetchMovieData();
 
     // Ensure the dependency array is empty to run the effect only once
-  }, [moviesData]);
-  console.log(moviesData.length, "Fetched Data"); // Log the fetched data
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -41,7 +41,7 @@ const HomePage = () => {
           <p>No movies available.</p>
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

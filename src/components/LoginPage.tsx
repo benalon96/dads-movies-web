@@ -12,9 +12,11 @@ import {
 import "./Login.css";
 import { registerNewUser, loginUser } from "../FirebaseService"; // Import Firebase functions
 import Footer from "../models/Footer";
+import { useAuth } from "../AuthContext";
 
 const LoginPage = () => {
   const [loginOrRegister, setLoginOrRegister] = useState(false);
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
@@ -25,7 +27,9 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-
+  if (currentUser) {
+    navigate("/home");
+  }
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -72,8 +76,7 @@ const LoginPage = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           zIndex: "1",
-        }}
-      ></div>
+        }}></div>
 
       {/* Login dialog */}
       <div
@@ -86,8 +89,7 @@ const LoginPage = () => {
           height: "70%",
           width: "70%",
           zIndex: "2",
-        }}
-      >
+        }}>
         {loginOrRegister ? (
           <form>
             <div className="d-flex flex-row align-items-center justify-content-center justify-content-sm-start">
@@ -95,24 +97,21 @@ const LoginPage = () => {
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faFacebookF} />
               </button>
 
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faTwitter} />
               </button>
 
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faGoogle} />
               </button>
             </div>
@@ -120,8 +119,7 @@ const LoginPage = () => {
             <div className="divider d-flex align-items-center my-3">
               <p
                 className="text-center fw-bold mx-3 mb-0"
-                style={{ color: "white" }}
-              >
+                style={{ color: "white" }}>
                 Or
               </p>
             </div>
@@ -176,8 +174,7 @@ const LoginPage = () => {
                 <label
                   className="form-check-label"
                   htmlFor="form2Example3"
-                  style={{ color: "white" }}
-                >
+                  style={{ color: "white" }}>
                   Remember me
                 </label>
               </div>
@@ -195,16 +192,14 @@ const LoginPage = () => {
                   paddingRight: "2rem",
                   backgroundColor: "",
                 }}
-                onClick={() => registerNewUserHandler()}
-              >
+                onClick={() => registerNewUserHandler()}>
                 Register
               </button>
               <p className="small fw-bold mt-2 mb-0">
                 Already have an account?{" "}
                 <a
                   className="link-danger"
-                  onClick={() => setLoginOrRegister(false)}
-                >
+                  onClick={() => setLoginOrRegister(false)}>
                   Login
                 </a>
               </p>
@@ -217,24 +212,21 @@ const LoginPage = () => {
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faFacebookF} />
               </button>
 
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faTwitter} />
               </button>
 
               <button
                 type="button"
                 className="btn btn-primary btn-floating mx-1"
-                style={{ backgroundColor: "#4E387E" }}
-              >
+                style={{ backgroundColor: "#4E387E" }}>
                 <FontAwesomeIcon icon={faGoogle} />
               </button>
             </div>
@@ -242,8 +234,7 @@ const LoginPage = () => {
             <div className="divider d-flex align-items-center my-3">
               <p
                 className="text-center fw-bold mx-3 mb-0"
-                style={{ color: "white" }}
-              >
+                style={{ color: "white" }}>
                 Or
               </p>
             </div>
@@ -286,8 +277,7 @@ const LoginPage = () => {
                 <label
                   className="form-check-label"
                   htmlFor="form2Example3"
-                  style={{ color: "white" }}
-                >
+                  style={{ color: "white" }}>
                   Remember me
                 </label>
               </div>
@@ -305,16 +295,14 @@ const LoginPage = () => {
                   paddingRight: "2rem",
                   backgroundColor: "#4E387E",
                 }}
-                onClick={() => loginUserHandler()}
-              >
+                onClick={() => loginUserHandler()}>
                 Login
               </button>
               <p className="small fw-bold mt-2 mb-0">
                 Don't have an account?{" "}
                 <a
                   className="link-danger"
-                  onClick={() => setLoginOrRegister(true)}
-                >
+                  onClick={() => setLoginOrRegister(true)}>
                   Register
                 </a>
               </p>
