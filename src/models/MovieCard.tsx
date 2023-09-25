@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { getMoviePoster, searchMovieTrailer } from "../components/MoviePoster";
 import "./MovieCard.css";
 
@@ -23,46 +24,42 @@ const MovieCard = ({ movie }: any) => {
   }, [movie]);
 
   // Function to play the trailer
-  // const playTrailer = async () => {
-  //   try {
-  //     const url = await getMovieTrailer(movie.name);
-  //     setTrailerUrl(url);
-  //     console.log(trailerUrl, "TrailerUrl");
-  //   } catch (error) {
-  //     console.error("Error fetching movie trailer:", error);
-  //   }
-  // };
   const playTrailer = async () => {
     try {
       const url = await searchMovieTrailer(movie.name);
       setTrailerUrl(url);
-      console.log(trailerUrl, "TrailerUrl");
     } catch (error) {
       console.error("Error fetching movie trailer:", error);
     }
   };
-  return (
-    <div className="movie-card">
-      <button onClick={playTrailer}>Play Trailer</button>
-      <img
-        className="movie-card-img"
-        src={posterUrl ? posterUrl : movie.pictureUrl}
-        alt={movie && movie.name}
-      />
-      <div className="movie-card-info">
-        <h3 className="movie-card-title">{movie.name}</h3>
 
-        {trailerUrl && (
-          <iframe
-            title="Movie Trailer"
-            width="320"
-            height="180"
-            src={trailerUrl}
-            frameBorder="0"
-            allowFullScreen></iframe>
-        )}
+  return (
+    // Use Link to navigate to the MoviePage and pass the movie name as a parameter
+    <Link
+      to={`/movie/${encodeURIComponent(movie.name)}`}
+      className="movie-link">
+      <div className="flip-card">
+        <div className="flip-card-inner">
+          <div className="flip-card-front">
+            <img
+              src={posterUrl ? posterUrl : movie.pictureUrl}
+              alt={movie.name}
+              style={{ width: "150px", height: "200px" }}
+            />
+          </div>
+          <div className="flip-card-back">
+            <img
+              src={posterUrl ? posterUrl : movie.pictureUrl}
+              alt={movie.name}
+              style={{ width: "150px", height: "200px" }}
+            />
+            <div className="text-overlay">
+              <p>{movie.name}</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
