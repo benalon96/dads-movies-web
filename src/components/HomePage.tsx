@@ -11,12 +11,13 @@ import {
 } from "./MoviePoster";
 import { Carousel } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { getCategoriesByNumbers } from "../models/MovieCategories";
 
 const HomePage = () => {
   const [moviesData, setMoviesData] = useState<any[]>([]);
   const [moviesDetails, setMoviesDetails] = useState<any[]>([]); // Initialize as empty array
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedMovie, setSelectedMovie] = useState<any | null>(null);
+
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [moviePosters, setMoviePosters] = useState<string[]>([]);
@@ -32,23 +33,22 @@ const HomePage = () => {
           const [posterUrl, details] = await Promise.all([
             getMoviePoster(movie.name),
             getMovieDetails(movie.name), // Fetch movie details
+            console.log(posterAndDetailsPromises, "details"),
           ]);
-          setMoviesDetails((prevMoviesDetails) => [
-            ...prevMoviesDetails,
-            {
-              originalTitle: details.original_title || "", // Ensure you have a default value
-              backdropPath: details.backdrop_path || "",
-              overview: details.overview || "", // Ensure you have a default value
-              releaseDate: details.release_date || "", // Ensure you have a default value
-              voteAverage: details.vote_average || "", // Ensure you have a default value
-              posterPath: details.poster_path || "", // Ensure you have a default value
-              movieUrl: movie.movieUrl || "", // Ensure you have a default value
-            },
-          ]);
-          setMoviePosters((prevMoviePosters: any) => [
-            ...prevMoviePosters,
-            posterUrl || "",
-          ]);
+          console.log(details, "details"),
+            setMoviesDetails((prevMoviesDetails) => [
+              ...prevMoviesDetails,
+              {
+                originalTitle: details.original_title || "", // Ensure you have a default value
+                backdropPath: details.backdrop_path || "",
+                overview: details.overview || "", // Ensure you have a default value
+                releaseDate: details.release_date || "", // Ensure you have a default value
+                voteAverage: details.vote_average || "", // Ensure you have a default value
+                posterPath: details.poster_path || "", // Ensure you have a default value
+                movieUrl: movie.movieUrl || "", // Ensure you have a default value
+                categories: details.genre_ids || "",
+              },
+            ]);
         });
 
         // Wait for all poster and details promises to resolve
@@ -62,25 +62,6 @@ const HomePage = () => {
 
     fetchMovieData();
   }, []);
-  console.log(moviesDetails, "test");
-  useEffect(() => {
-    const handleNext = () => {
-      if (activeIndex === moviePosters.length - 1) {
-        setActiveIndex(0);
-      } else {
-        setActiveIndex(activeIndex + 1);
-      }
-    };
-
-    const intervalId = setInterval(handleNext, 10000);
-
-    return () => clearInterval(intervalId);
-  }, [activeIndex, moviePosters]);
-
-  const handleMovieCardClick = (movie: any) => {
-    // Instead of using <MoviePage />, use Link to navigate to MoviePage and pass the movie object
-    // This assumes you have set up your routes properly with React Router
-  };
 
   const playTrailer = async (movieTitle: string) => {
     try {
@@ -90,46 +71,57 @@ const HomePage = () => {
       console.error("Error fetching movie trailer:", error);
     }
   };
-
+  const realeseDate = (date: any) => {
+    const releaseYear = new Date(date).getFullYear();
+    return releaseYear;
+  };
   return (
-    <div>
+    <div style={{ backgroundColor: "rgb(20, 20, 19)", height: "120vh" }}>
       <Carousel
         className="custom-carousel"
         controls={false}
         indicators={false}
-        onSelect={() => {}}>
+        slide={true}
+        pause={false}
+        onSelect={() => {}}
+      >
         {moviesDetails.map((movie, index) => (
           <Carousel.Item
             key={index}
-            interval={10000}
+            interval={5000}
+            className="custom-carousel-item"
             style={{
-              maxHeight: "420px",
               background: `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${movie.backdropPath}) center/cover no-repeat`,
-            }}>
-            <div style={{ float: "right", bottom: "0" }}>
+              transition: "transform 0.5s ease",
+            }}
+          >
+            <div style={{ float: "left", bottom: "0" }}>
               <div className="info_section">
-                <div className="movie_header">
-                  <img
-                    style={{
-                      float: "left",
-                      height: "300px",
-                      marginLeft: "0px",
-                      width: "200px",
-                      borderRadius: "10px",
-                      objectFit: "cover",
-                      padding: "20px",
-                    }}
-                    src={`https://image.tmdb.org/t/p/w300${movie.posterPath}`}
-                    alt={`Movie Poster ${index + 1}`}
-                  />
+                <img
+                  style={{
+                    float: "left",
+                    marginTop: "3%",
+                    width: "200px",
+                    borderRadius: "10px",
+                    objectFit: "cover",
+                    padding: "20px",
+                  }}
+                  src={`https://image.tmdb.org/t/p/w300${movie.posterPath}`}
+                  alt={`Movie Poster ${index + 1}`}
+                />
+                <div style={{ marginTop: "5%", width: "50%" }}>
                   <h1 className="movie_name">{movie.originalTitle}</h1>
-                  <h4 className="date">{movie.releaseDate}</h4>
+                  <h4 className="date">{realeseDate(movie.releaseDate)}</h4>
                   <span className="minutes">117 min</span>
-                  <p className="type">Action, Crime, Fantasy</p>
+                  <p className="type">
+                    {getCategoriesByNumbers(movie.categories)}
+                  </p>
                   <p className="text">{movie.overview}</p>
                 </div>
-                <button className="button_movie">Watch Now!</button>
               </div>
+              <Link to={`/movie/${encodeURIComponent(movie.originalTitle)}`}>
+                <button className="button_movie">Watch Now!</button>
+              </Link>
             </div>
           </Carousel.Item>
         ))}
@@ -141,7 +133,8 @@ const HomePage = () => {
             <Link
               key={index}
               to={`/movie/${movie.name}`}
-              className="movie-card-link">
+              className="movie-card-link"
+            >
               <MovieCard movie={movie} />
             </Link>
           ))

@@ -37,7 +37,8 @@ const MovieCard = ({ movie }: any) => {
     // Use Link to navigate to the MoviePage and pass the movie name as a parameter
     <Link
       to={`/movie/${encodeURIComponent(movie.name)}`}
-      className="movie-link">
+      className="movie-link"
+    >
       <div className="flip-card">
         <div className="flip-card-inner">
           <div className="flip-card-front">
