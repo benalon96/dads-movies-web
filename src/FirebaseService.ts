@@ -59,8 +59,8 @@ export const mergeMovieData = async () => {
     const moviesSnapshot = await get(moviesRef);
 
     // Reference to the "pictures" node in your database
-    const picturesRef = ref(db, "pictures");
-    const picturesSnapshot = await get(picturesRef);
+    // const picturesRef = ref(db, "pictures");
+    // const picturesSnapshot = await get(picturesRef);
 
     // Create an array to store the merged data
     const mergedData: any[] = [];
@@ -71,16 +71,19 @@ export const mergeMovieData = async () => {
       const movieUrl = movieSnapshot.val();
 
       // Check if there's a matching picture
-      const pictureUrl = picturesSnapshot.child(movieKey).val();
+      // const pictureUrl = picturesSnapshot.child(movieKey).val();
 
-      if (pictureUrl) {
-        // Create an object for each movie with name, picture URL, and movie URL
-        mergedData.push({
-          name: movieKey,
-          pictureUrl: pictureUrl,
-          movieUrl: movieUrl,
-        });
-      }
+      mergedData.push({
+        name: movieKey,
+        movieUrl: movieUrl,
+      });
+      // if (pictureUrl) {
+      //   // Create an object for each movie with name, picture URL, and movie URL
+      //   mergedData.push({
+      //     name: movieKey,
+      //     movieUrl: movieUrl,
+      //   });
+      // }
     });
 
     // Return the mergedData array containing movie objects

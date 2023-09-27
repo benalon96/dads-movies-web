@@ -379,3 +379,154 @@ body{
     transition: transform 0.5s ease;
     /* Add transition for smooth slide animation */
 }
+/* Arrow 1 */
+.arrow.arrow--left,
+.arrow.arrow--right {
+  cursor: pointer;
+  display: block;
+  width: 21.21px;
+  height: 42.42px;
+  position: relative;
+}
+
+.arrow.arrow--left span,
+.arrow.arrow--left:before,
+.arrow.arrow--left:after,
+.arrow.arrow--right span,
+.arrow.arrow--right:before,
+.arrow.arrow--right:after {
+  background: #fff;
+  content: '';
+  display: block;
+  width: 21.21px;
+  height: 2px;
+  position: absolute;
+  top: calc(50% - 1px);
+}
+
+.arrow.arrow--left:before {
+  transform: rotate(-45deg);
+}
+
+.arrow.arrow--left:after {
+  transform: rotate(45deg);
+}
+
+.arrow.arrow--left span {
+  width: 0;
+}
+
+.arrow.arrow--left:hover span {
+  width: 29.85px;
+}
+
+.arrow.arrow--left span,
+.arrow.arrow--left:before,
+.arrow.arrow--left:after,
+.arrow.arrow--right span,
+.arrow.arrow--right:before,
+.arrow.arrow--right:after {
+  transition: left 0.3s 0.05s, right 0.3s 0.05s;
+}
+
+.arrow.arrow--left span,
+.arrow.arrow--left:before,
+.arrow.arrow--left:after {
+  left: 0;
+  transform-origin: left 50%;
+}
+
+.arrow.arrow--left:before,
+.arrow.arrow--left:after,
+.arrow.arrow--right:before,
+.arrow.arrow--right:after {
+  transition: transform 0.3s 0.05s;
+}
+
+.arrow.arrow--right span,
+.arrow.arrow--right:before,
+.arrow.arrow--right:after {
+  right: 0;
+  transform-origin: right 50%;
+}
+
+.arrow.arrow--left:hover span,
+.arrow.arrow--left:hover:before,
+.arrow.arrow--left:hover:after,
+.arrow.arrow--right:hover span,
+.arrow.arrow--right:hover:before,
+.arrow.arrow--right:hover:after {
+  left: -21.21px;
+  right: -21.21px;
+  transform: none;
+}
+
+/* Arrow 2 */
+.arrow.arrow--right,
+.arrow.arrow--left {
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  align-items: flex-start;
+  text-transform: uppercase;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.arrow.arrow--right span,
+.arrow.arrow--left span {
+  display: block;
+  width: 3em;
+  opacity: 0;
+  transition: opacity 0.3s 0s;
+  padding: 0 0.5em;
+}
+
+.arrow.arrow--right:hover span,
+.arrow.arrow--left:hover span {
+  opacity: 1;
+  transition: opacity 0.3s 0.1s;
+}
+
+.arrow.arrow--right:before,
+.arrow.arrow--left:before {
+  content: '';
+  display: block;
+  border: solid #fff;
+  border-width: 2px 2px 0 0;
+  position: absolute;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+}
+
+.arrow.arrow--left:before {
+  transform: rotate(-135deg);
+  right: 0;
+  transition: right 0.3s 0.2s;
+}
+
+.arrow.arrow--left:hover:before {
+  right: 100%;
+  transition: right 0.3s;
+}
+
+.arrow.arrow--right {
+  text-align: right;
+}
+
+.arrow.arrow--right:before {
+  left: 0;
+  transform: rotate(45deg);
+  transition: left 0.3s 0.2s;
+}
+
+.arrow.arrow--right:hover:before {
+  left: 100%;
+  transition: left 0.3s;
+}
+
+.arrow.arrow--right:hover,
+.arrow.arrow--left:hover {
+  transform: none;
+}

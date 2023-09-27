@@ -2,22 +2,36 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../models/Navbar";
 import { mergeMovieData } from "../FirebaseService";
-import { getMovieDetails } from "./MoviePoster";
+import {
+  getMovieDetails,
+  getMovieTrailerByName,
+  searchMovieTrailer,
+} from "./MoviePoster";
 import "./MoviePage.css"; // Import your MoviePage.css
-import { ReactNetflixPlayer } from "react-netflix-player";
-import Player from "qier-player";
+import { Box, IconButton, Modal, Typography } from "@mui/material";
+import ReactPlayer from "react-player";
 import {
   extractRuntimeFromURL,
   getCategoriesByNumbers,
 } from "../models/MovieCategories";
+import CloseIcon from "@mui/icons-material/Close"; // Import the Close icon
 
 const MoviePage = () => {
   const { movieName }: any = useParams();
   const [moviesData, setMoviesData] = useState<any[]>([]);
   const [movieDetails, setMovieDetails] = useState<any>({});
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal
 
   useEffect(() => {
+    const playTrailer = async () => {
+      try {
+        const url = await getMovieTrailerByName(movieName);
+        setVideoUrl(url);
+      } catch (error) {
+        console.error("Error fetching movie trailer:", error);
+      }
+    };
     const fetchMovieDB = async () => {
       try {
         const data: any = await mergeMovieData();
@@ -27,12 +41,14 @@ const MoviePage = () => {
       }
     };
     fetchMovieDB();
+    playTrailer();
 
     if (moviesData.length > 0) {
       const matchingMovie = moviesData.find(
         (movie) => movie.name === movieName
       );
-
+      console.log(moviesData, "moviesData");
+      console.log(movieName, "bb");
       if (matchingMovie) {
         // Fetch movie details for the matching movie
         const fetchMovieDetails = async () => {
@@ -46,6 +62,7 @@ const MoviePage = () => {
               voteAverage: details.vote_average || "",
               posterPath: details.poster_path || "",
               movieUrl: matchingMovie.movieUrl || "",
+              trailerUrl: matchingMovie.trailerUrl || "", // Add trailer URL here
               categories: details.genre_ids || "",
             });
           } catch (error) {
@@ -63,12 +80,8 @@ const MoviePage = () => {
     return releaseYear;
   };
 
-  const handleTimeUpdate = () => {
-    const video = videoRef.current;
-    console.log(video, "video");
-    if (video) {
-      console.log(`Current time: ${video.currentTime} seconds`);
-    }
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -83,15 +96,13 @@ const MoviePage = () => {
                 className="movie-backdrop"
                 style={{
                   background: `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${movieDetails.backdropPath}) center/cover no-repeat`,
-                }}
-              ></div>
+                }}></div>
             ) : (
               <div
                 className="movie-backdrop"
                 style={{
                   background: `url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${movieDetails.posterPath}) center/cover no-repeat`,
-                }}
-              ></div>
+                }}></div>
             )}
 
             <div className="movie_header">
@@ -107,25 +118,21 @@ const MoviePage = () => {
                   {getCategoriesByNumbers(movieDetails.categories)}
                 </p>
                 <p className="text">{movieDetails.overview}</p>
+
+                {videoUrl && (
+                  <button onClick={() => setIsModalOpen(true)}>
+                    Play Trailer
+                  </button>
+                )}
               </div>
             </div>
             <div className="movie-container">
-              <ReactNetflixPlayer
-                src={movieDetails.movieUrl}
-                title={movieDetails.originalTitle}
-                subTitle={"Opening"}
-                titleMedia={movieDetails.originalTitle}
-                extraInfoMedia={"Opening"}
-                autoControllCloseEnabled
-                backButton={() => {}}
-                fullPlayer={false}
-                autoPlay={true}
-                startPosition={0}
-                dataNext={{ title: "." }}
-                onTimeUpdate={() => handleTimeUpdate()}
-                onNextClick={() => {}}
-                onClickItemListReproduction={(id: any, playing: any) => {}}
-                onEnded={() => {}}
+              {/* Use react-player instead of ReactNetflixPlayer */}
+              <ReactPlayer
+                url={movieDetails.movieUrl}
+                controls
+                width="100%"
+                height="100%"
               />
             </div>
           </>
@@ -133,6 +140,45 @@ const MoviePage = () => {
           <p>Loading movie data...</p>
         )}
       </div>
+      <Modal
+        open={isModalOpen}
+        onClose={closeModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        {/* Modal content */}
+        <Box
+          sx={{
+            width: "700px",
+            position: "relative", // Position relative for absolute positioning
+          }}>
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={closeModal}
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              zIndex: 1, // Ensure it's above the content
+            }}>
+            <CloseIcon />
+          </IconButton>
+
+          <ReactPlayer
+            url={videoUrl}
+            autoPlay={true}
+            playing={true}
+            controls
+            width="700px"
+            height="500px"
+          />
+        </Box>
+      </Modal>
     </div>
   );
 };

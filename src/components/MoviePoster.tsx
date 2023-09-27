@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "YOUR_TMDB_API_KEY"; // Replace with your TMDb API key
+const API_KEY = "ae8f86e5b5ca3c75e791e6897790791c"; // Replace with your TMDb API key
 const BASE_URL = "https://api.themoviedb.org/3";
 
 // Function to fetch a movie poster by title
@@ -58,33 +58,46 @@ export const getMovieDetails = async (movieTitle: any) => {
 
 // Function to fetch a movie trailer by name using TMDb API
 
-// import sizeOf from "image-size";
-// import sharp from "sharp";
+export const getMovieTrailerByName = async (movieName: any) => {
+  try {
+    // Step 1: Search for the movie by name
+    const searchResponse = await fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(
+        movieName
+      )}`
+    );
+    const searchData = await searchResponse.json();
 
-// export const changeSizeOfImage = async (
-//   imageUrl: string,
-//   newWidth: number,
-//   newHeight: number
-// ) => {
-//   try {
-//     // Load the image
-//     const imageBuffer = await sharp(imageUrl).toBuffer();
+    // Check if there are search results
+    if (searchData.results && searchData.results.length > 0) {
+      const movieId = searchData.results[0].id; // Get the ID of the first result (you can refine this logic as needed)
 
-//     // Get the dimensions of the image
-//     const dimensions = sizeOf(imageBuffer);
+      // Step 2: Fetch movie details including videos (trailers)
+      const movieResponse = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`
+      );
+      const movieData = await movieResponse.json();
 
-//     // Resize the image using sharp
-//     const resizedImageBuffer = await sharp(imageBuffer)
-//       .resize(newWidth, newHeight)
-//       .toBuffer();
+      // Step 3: Filter and return the trailer URL
+      const trailers = movieData.videos.results.filter(
+        (video: any) => video.type === "Trailer"
+      );
+      if (trailers.length > 0) {
+        const trailerKey = trailers[0].key;
+        const trailerUrl = `https://www.youtube.com/watch?v=${trailerKey}`;
+        return trailerUrl;
+      } else {
+        return "No trailers found for this movie.";
+      }
+    } else {
+      return "Movie not found.";
+    }
+  } catch (error) {
+    throw new Error("Error fetching movie trailer: " + error);
+  }
+};
 
-//     // Save or use the resized image as needed (you can save it to a file or return it as a data URI)
-//     return resizedImageBuffer;
-//   } catch (error) {
-//     console.error("Error resizing image:", error);
-//     throw error;
-//   }
-// };
+// Example usage:
 
 // Constants for your YouTube Data API key and base URL
 const YOUTUBE_API_KEY = "AIzaSyAmw3Zy_osVZ31nfM922Fn-i60p3VY8v3s";
