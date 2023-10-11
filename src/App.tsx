@@ -13,7 +13,7 @@ function App() {
     <AuthProvider>
       <div className="App">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route index element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/movie/:movieName" element={<MoviePage />} />
           <Route path="/login" element={<LoginandRegisterPage />} />

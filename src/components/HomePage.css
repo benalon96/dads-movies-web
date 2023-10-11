@@ -374,7 +374,7 @@ body{
     background-attachment: scroll;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center 25%;
+    background-position: center 35%;
     /* Adjust the vertical position as needed */
     transition: transform 0.5s ease;
     /* Add transition for smooth slide animation */
@@ -530,3 +530,8 @@ body{
 .arrow.arrow--left:hover {
   transform: none;
 }
+.tracking-in-expand{animation:tracking-in-expand .7s cubic-bezier(.215,.61,.355,1.000) both}
+@keyframes tracking-in-expand{0%{letter-spacing:-.5em;opacity:0}40%{opacity:.6}100%{opacity:1}}
+
+.text-focus-in{animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both}
+@keyframes text-focus-in{0%{filter:blur(12px);opacity:0}100%{filter:blur(0);opacity:1}}

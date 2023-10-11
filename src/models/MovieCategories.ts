@@ -22,7 +22,18 @@ export enum MovieCategory {
   War = 10752,
   Western = 37,
 }
-
+export interface Movie {
+  originalTitle: string;
+  backdropPath: string;
+  overview: string;
+  releaseDate: string;
+  voteAverage: number;
+  posterPath: string;
+  movieUrl: string;
+  categories: number[];
+  movieName: string;
+  trailerUrl?: string;
+}
 // Define the function to get categories by numbers
 // MovieCategories.ts
 
@@ -52,3 +63,4 @@ export function extractRuntimeFromURL(url: string): string | null {
 
   return "01:00";
 }
+

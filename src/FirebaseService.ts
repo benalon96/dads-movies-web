@@ -7,7 +7,15 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { getDatabase, ref, get } from "firebase/database";
+import { updateDoc, arrayUnion } from "firebase/firestore";
 import firebase from "firebase/app";
+import {
+  getFirestore,
+  setDoc,
+  doc,
+  DocumentData,
+  DocumentReference,
+} from "firebase/firestore";
 import "firebase/auth";
 // Your Firebase config
 const firebaseConfig = {
@@ -29,18 +37,66 @@ const auth: Auth = getAuth(app);
 
 // Reference to the Firebase Realtime Database
 const db = getDatabase();
-
+export const dbFireStore = getFirestore(app);
 // Function to register a new user
 export const getAuthContext = () => {
   const auth1 = getAuth();
   return auth1;
 };
 // Function to register a new user
-export const registerNewUser = (
-  email: string,
-  password: string
-): Promise<UserCredential> => {
-  return createUserWithEmailAndPassword(auth, email, password);
+export const registerNewUser = (user: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Register the user using Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        user.email,
+        user.password
+      );
+
+      // Get the user's UID
+      const { uid } = userCredential.user;
+
+      // Create a Firestore reference to the user's document
+      const userDocRef = doc(getFirestore(), "users", uid); // Assuming "users" is the collection name
+
+      // Set the user's name and avatar in the Firestore document
+      await setDoc(userDocRef, {
+        id: uid,
+        name: user.name,
+        avatar: user.avatar,
+        email: user.email,
+      });
+
+      resolve(userCredential);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+export const updateWatchedMovieUser = async (
+  uid: string, // Pass the user's UID as an argument
+  movieName: string,
+  category: number[],
+  endTime: number
+) => {
+  try {
+    const userRef = doc(dbFireStore, "users", uid);
+    console.log(userRef, "userRef");
+    // Create an object to represent the watched movie
+    const watchedMovie = {
+      name: movieName,
+      categories: category,
+      endTime: endTime,
+    };
+
+    // Update the user document to add the movie to the watchedMovies array
+    await updateDoc(userRef, {
+      watchedMovies: arrayUnion(watchedMovie),
+    });
+  } catch (error) {
+    console.error("Error updating watched movies:", error);
+  }
 };
 
 // Function to log in a user

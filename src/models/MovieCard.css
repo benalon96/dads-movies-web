@@ -1,6 +1,7 @@
 .flip-card {
     background-color: transparent;
     cursor: pointer;
+ 
     perspective: 1000px; /* Remove this if you don't want the 3D effect */
     margin: 10px; /* Add margin to create space between cards */
     width: 150px;

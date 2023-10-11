@@ -6,9 +6,10 @@
 	box-sizing: border-box;
 }
 
+
 body {
 	/* background: #f6f5f7; */
-    background-image: url("../images/login-background.png");
+    /* background-image: url("../images/login-background.png"); */
     /* Other background properties if needed */
     background-repeat: no-repeat;
     background-size: cover;
@@ -18,14 +19,39 @@ body {
 	height: 100vh;
 	margin: -20px 0 50px;
 }
+#animatedBackground {
+	width: 100%;
+	height: 120vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-image: url("../images/login-background.png");
+	background-repeat: repeat;
+	background-position: 0 0;
+	background-size: auto 100%;
+  /*adjust s value for speed*/
+	animation: animatedBackground 500s linear infinite;
+  }
+  
+  @keyframes animatedBackground {
+	from {
+	  background-position: 0 0;
+	}
+  /*use negative width if you want it to flow right to left else and positive for left to right*/
+	to {
+	  background-position: -10000px 0;
+	}
+  }
 
 h1 {
 	font-weight: bold;
+	animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both;
 	margin: 0;
 }
 
 h2 {
 	text-align: center;
+	animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both;
 }
 
 p {
@@ -34,10 +60,12 @@ p {
 	line-height: 20px;
 	letter-spacing: 0.5px;
 	margin: 20px 0 30px;
+	animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both;
 }
 
 span {
 	font-size: 12px;
+	animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both;
 }
 
 a {
@@ -45,6 +73,7 @@ a {
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
+	animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both;
 }
 
 button {
@@ -58,6 +87,7 @@ button {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+	animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both;
 }
 
 button:active {
@@ -97,13 +127,17 @@ input {
 	border-radius: 10px;
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
 			0 10px 10px rgba(0,0,0,0.22);
+			
 	position: relative;
 	overflow: hidden;
 	justify-content: center;
-	margin-top: 200px !important;
-	width: 768px;
+	padding: 50px;
+	margin-top: 50px;
+	padding-right: 20px;
+	bottom: 29px;
+	width: 968px;
 	max-width: 100%;
-	min-height: 480px;
+	min-height: 580px;
 }
 
 .form-container {
@@ -122,7 +156,12 @@ input {
 .container.right-panel-active .sign-in-container {
 	transform: translateX(100%);
 }
-
+.sign-up-container-moblie{
+	left: 0;
+	width: 50%;
+	/* opacity: 0; */
+	z-index: 1000 !important;
+}
 .sign-up-container {
 	left: 0;
 	width: 50%;
@@ -163,7 +202,12 @@ input {
 .container.right-panel-active .overlay-container{
 	transform: translateX(-100%);
 }
-
+.overlay-container-mobile{
+	background: #1E90FF;	
+	top:0;
+	max-height: 20%;
+	height: 20%;
+}
 .overlay {
 	background: #1E90FF;
 	background: -webkit-linear-gradient(to right, #0876e3, #0d82f7);
@@ -255,3 +299,30 @@ footer a {
     color: #3c97bf;
     text-decoration: none;
 }
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+    /* Add your mobile-specific CSS here */
+	#animatedBackground {
+	width: 100%;
+	height: 100%;
+
+	}
+    .container.right-panel-active .overlay-container {
+        transform: translateX(0);
+    }
+    .container.right-panel-active .overlay {
+        transform: translateX(0);
+    }
+    .container.right-panel-active .overlay-left {
+        transform: translateX(0);
+    }
+    .container.right-panel-active .overlay-right {
+        transform: translateX(0);
+    }
+}
+.input{
+	animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both;
+}
+.text-focus-in{animation:text-focus-in 1s cubic-bezier(.55,.085,.68,.53) both}
+@keyframes text-focus-in{0%{filter:blur(12px);opacity:0}100%{filter:blur(0);opacity:1}}

@@ -25,22 +25,22 @@ const MovieCard = ({ movie }: any) => {
   return (
     // Use Link to navigate to the MoviePage and pass the movie name as a parameter
     <Link
-      to={`/movie/${encodeURIComponent(movie.originalTitle)}`}
+      to={`/movie/${encodeURIComponent(movie.movieName)}`}
       className="movie-link">
-      <div className="flip-card">
+      <div className="flip-card text-focus-in" style={{ borderRadius: "10px" }}>
         <div className="flip-card-inner">
           <div className="flip-card-front">
             <img
-              src={`https://image.tmdb.org/t/p/w300${movie.posterPath}`}
+              src={`https://image.tmdb.org/t/p/w200${movie.posterPath}`}
               alt={movie.originalTitle}
-              style={{ width: "150px", height: "200px" }}
+              style={{ width: "150px", height: "200px", borderRadius: "10px" }}
             />
           </div>
           <div className="flip-card-back">
             <img
-              src={`https://image.tmdb.org/t/p/w300${movie.posterPath}`}
+              src={`https://image.tmdb.org/t/p/w200${movie.posterPath}`}
               alt={movie.originalTitle}
-              style={{ width: "150px", height: "200px" }}
+              style={{ width: "150px", height: "200px", borderRadius: "10px" }}
             />
             <div className="text-overlay">
               <p>{movie.originalTitle}</p>
